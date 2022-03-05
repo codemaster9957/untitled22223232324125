@@ -136,7 +136,7 @@ controller.combos.attachCombo("B+L", function () {
         . . c 6 c c c c c 6 3 3 3 6 c . 
         . . . c c c c c c c c c c c . . 
         `)
-    statusbar3.value += 100
+    statusbar3.value += 10
 })
 controller.combos.attachCombo("B+R", function () {
     mySprite.setImage(img`
@@ -157,7 +157,7 @@ controller.combos.attachCombo("B+R", function () {
         . c 6 3 3 3 6 c c c c c 6 c . . 
         . . c c c c c c c c c c c . . . 
         `)
-    statusbar3.value += 100
+    statusbar3.value += 10
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -351,6 +351,14 @@ controller.combos.attachCombo("A+R", function () {
     )
     info.startCountdown(2)
 })
+scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
+    if (mysprite2.isHittingTile(CollisionDirection.Left)) {
+        mysprite2.setVelocity(50, 0)
+    }
+    if (mysprite2.isHittingTile(CollisionDirection.Right)) {
+        mySprite.setVelocity(-50, 0)
+    }
+})
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     mySprite,
@@ -429,14 +437,13 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     statusbar3.value = 0
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
-    if (info.score() == 2) {
-        statusbar2.value += -10
-        info.setScore(0)
+    statusbar.value += -10
+    if (statusbar3.value == 10) {
+    	
     }
-    if (info.score() == 1) {
-        statusbar2.value += -10
-        info.setScore(0)
-    }
+})
+statusbars.onZero(StatusBarKind.shield, function (status) {
+	
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (info.score() == 2) {
@@ -450,6 +457,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let statusbar3: StatusBarSprite = null
 let statusbar2: StatusBarSprite = null
+let statusbar: StatusBarSprite = null
+let mysprite2: Sprite = null
 let mySprite: Sprite = null
 info.setScore(0)
 mySprite = sprites.create(img`
@@ -470,7 +479,7 @@ mySprite = sprites.create(img`
     . c 5 c 4 c 5 5 5 5 c 5 5 5 5 c 
     . c c c . . c c c c c c c c c . 
     `, SpriteKind.Player)
-let mysprite2 = sprites.create(img`
+mysprite2 = sprites.create(img`
     . . . . . . . . . . . c c . . . 
     . . . . . . . c c c c 6 3 c . . 
     . . . . . . c 6 3 3 3 3 6 c . . 
@@ -488,9 +497,10 @@ let mysprite2 = sprites.create(img`
     c 5 5 5 5 c 5 5 5 5 c 4 c 5 c . 
     . c c c c c c c c c . . c c c . 
     `, SpriteKind.Enemy)
-let statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+statusbar = statusbars.create(20, 4, StatusBarKind.Health)
 statusbar2 = statusbars.create(20, 4, StatusBarKind.health2)
 statusbar3 = statusbars.create(20, 4, StatusBarKind.shield)
+statusbar3.value = 10
 statusbar3.setColor(9, 1)
 statusbar.attachToSprite(mySprite)
 statusbar2.attachToSprite(mysprite2)
@@ -501,3 +511,9 @@ scene.cameraFollowSprite(mySprite)
 tiles.setCurrentTilemap(tilemap`level1`)
 tiles.placeOnTile(mySprite, tiles.getTileLocation(0, 8))
 tiles.placeOnTile(mysprite2, tiles.getTileLocation(18, 8))
+game.onUpdateInterval(5000, function () {
+    mysprite2.setVelocity(50, 0)
+})
+game.onUpdateInterval(5000, function () {
+    mysprite2.setVelocity(-50, 0)
+})
