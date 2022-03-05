@@ -488,7 +488,6 @@ let mysprite2 = sprites.create(img`
     c 5 5 5 5 c 5 5 5 5 c 4 c 5 c . 
     . c c c c c c c c c . . c c c . 
     `, SpriteKind.Enemy)
-controller.player2.moveSprite(mysprite2)
 let statusbar = statusbars.create(20, 4, StatusBarKind.Health)
 statusbar2 = statusbars.create(20, 4, StatusBarKind.health2)
 statusbar3 = statusbars.create(20, 4, StatusBarKind.shield)
