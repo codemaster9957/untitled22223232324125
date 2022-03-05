@@ -237,6 +237,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     statusbar3.value = 0
 })
 info.onCountdownEnd(function () {
+    info.player2.setScore(0)
     info.setScore(0)
 })
 controller.combos.attachCombo("A+R", function () {
@@ -437,9 +438,11 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     statusbar3.value = 0
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
-    statusbar.value += -10
-    if (statusbar3.value == 10) {
+    if (true) {
     	
+    }
+    if (info.player2.score() == 1) {
+        statusbar.value += -10
     }
 })
 statusbars.onZero(StatusBarKind.shield, function (status) {
@@ -504,7 +507,7 @@ statusbar3.value = 10
 statusbar3.setColor(9, 1)
 statusbar.attachToSprite(mySprite)
 statusbar2.attachToSprite(mysprite2)
-statusbar3.value = 0
+statusbar3.max = 10
 statusbar3.attachToSprite(mySprite, 4, 0)
 controller.moveSprite(mySprite, 100, 0)
 scene.cameraFollowSprite(mySprite)
@@ -515,5 +518,5 @@ game.onUpdateInterval(5000, function () {
     mysprite2.setVelocity(50, 0)
 })
 game.onUpdateInterval(5000, function () {
-    mysprite2.setVelocity(-50, 0)
+	
 })
