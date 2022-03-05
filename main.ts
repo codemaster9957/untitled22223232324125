@@ -357,7 +357,7 @@ scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
         mysprite2.setVelocity(50, 0)
     }
     if (mysprite2.isHittingTile(CollisionDirection.Right)) {
-        mySprite.setVelocity(-50, 0)
+        mysprite2.setVelocity(-50, 0)
     }
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -438,8 +438,8 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     statusbar3.value = 0
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
-    if (true) {
-    	
+    if (statusbar3.value == 10) {
+        music.spooky.playUntilDone()
     }
     if (info.player2.score() == 1) {
         statusbar.value += -10
