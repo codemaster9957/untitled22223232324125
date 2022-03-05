@@ -449,27 +449,28 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     statusbar3.value = 0
 })
 controller.combos.attachCombo("L+R+A", function () {
-    projectile = sprites.createProjectileFromSprite(img`
-        . . . . . . . c c c a c . . . . 
-        . . c c b b b a c a a a c . . . 
-        . c c a b a c b a a a b c c . . 
-        . c a b c f f f b a b b b a . . 
-        . c a c f f f 8 a b b b b b a . 
-        . c a 8 f f 8 c a b b b b b a . 
-        c c c a c c c c a b c f a b c c 
-        c c a a a c c c a c f f c b b a 
-        c c a b 6 a c c a f f c c b b a 
-        c a b c 8 6 c c a a a b b c b c 
-        c a c f f a c c a f a c c c b . 
-        c a 8 f c c b a f f c b c c c . 
-        . c b c c c c b f c a b b a c . 
-        . . a b b b b b b b b b b b c . 
-        . . . c c c c b b b b b c c . . 
-        . . . . . . . . c b b c . . . . 
-        `, mySprite, 100, 0)
-    projectile.setKind(SpriteKind.meteor)
-    controller.combos.setTriggerType(TriggerType.Continuous)
-    controller.combos.setTimeout(-50)
+    if (statusbar.value <= 10) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . c c c a c . . . . 
+            . . c c b b b a c a a a c . . . 
+            . c c a b a c b a a a b c c . . 
+            . c a b c f f f b a b b b a . . 
+            . c a c f f f 8 a b b b b b a . 
+            . c a 8 f f 8 c a b b b b b a . 
+            c c c a c c c c a b c f a b c c 
+            c c a a a c c c a c f f c b b a 
+            c c a b 6 a c c a f f c c b b a 
+            c a b c 8 6 c c a a a b b c b c 
+            c a c f f a c c a f a c c c b . 
+            c a 8 f c c b a f f c b c c c . 
+            . c b c c c c b f c a b b a c . 
+            . . a b b b b b b b b b b b c . 
+            . . . c c c c b b b b b c c . . 
+            . . . . . . . . c b b c . . . . 
+            `, mySprite, 100, 0)
+        projectile.setKind(SpriteKind.meteor)
+        statusbar4.value += -10
+    }
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     if (statusbar3.value == 10) {
@@ -495,6 +496,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     }
 })
 let projectile: Sprite = null
+let statusbar4: StatusBarSprite = null
 let statusbar3: StatusBarSprite = null
 let statusbar2: StatusBarSprite = null
 let statusbar: StatusBarSprite = null
@@ -540,7 +542,7 @@ mysprite2 = sprites.create(img`
 statusbar = statusbars.create(20, 4, StatusBarKind.Health)
 statusbar2 = statusbars.create(20, 4, StatusBarKind.health2)
 statusbar3 = statusbars.create(20, 4, StatusBarKind.shield)
-let statusbar4 = statusbars.create(20, 4, StatusBarKind.Magic)
+statusbar4 = statusbars.create(20, 4, StatusBarKind.Magic)
 statusbar4.attachToSprite(mySprite, 8, 0)
 statusbar4.value = 0
 statusbar3.value = 10
@@ -559,4 +561,7 @@ game.onUpdateInterval(5000, function () {
 })
 game.onUpdateInterval(5000, function () {
     info.player2.changeScoreBy(1)
+})
+game.onUpdateInterval(10000, function () {
+    statusbar4.value += 1
 })
