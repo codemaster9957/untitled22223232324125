@@ -559,9 +559,9 @@ tiles.placeOnTile(mysprite2, tiles.getTileLocation(18, 8))
 game.onUpdateInterval(5000, function () {
     mysprite2.setVelocity(50, 0)
 })
-game.onUpdateInterval(5000, function () {
-    info.player2.changeScoreBy(1)
+game.onUpdateInterval(20000, function () {
+    statusbar4.value += 1
 })
 game.onUpdateInterval(10000, function () {
-    statusbar4.value += 1
+    info.player2.changeScoreBy(1)
 })
