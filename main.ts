@@ -1,3 +1,7 @@
+namespace SpriteKind {
+    export const now = SpriteKind.create()
+    export const later = SpriteKind.create()
+}
 namespace StatusBarKind {
     export const health2 = StatusBarKind.create()
     export const shield = StatusBarKind.create()
@@ -113,6 +117,30 @@ controller.combos.attachCombo("A+L", function () {
     false
     )
     info.startCountdown(2)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.now, function (sprite, otherSprite) {
+    if (controller.A.isPressed()) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . c c c a c . . . . 
+            . . c c b b b a c a a a c . . . 
+            . c c a b a c b a a a b c c . . 
+            . c a b c f f f b a b b b a . . 
+            . c a c f f f 8 a b b b b b a . 
+            . c a 8 f f 8 c a b b b b b a . 
+            c c c a c c c c a b c f a b c c 
+            c c a a a c c c a c f f c b b a 
+            c c a b 6 a c c a f f c c b b a 
+            c a b c 8 6 c c a a a b b c b c 
+            c a c f f a c c a f a c c c b . 
+            c a 8 f c c b a f f c b c c c . 
+            . c b c c c c b f c a b b a c . 
+            . . a b b b b b b b b b b b c . 
+            . . . c c c c b b b b b c c . . 
+            . . . . . . . . c b b c . . . . 
+            `, mySprite, 100, 0)
+        my_sprite_4.destroy()
+        mySprite3.destroy()
+    }
 })
 statusbars.onZero(StatusBarKind.health2, function (status) {
     game.over(true)
@@ -352,6 +380,9 @@ controller.combos.attachCombo("A+R", function () {
     )
     info.startCountdown(2)
 })
+statusbars.onZero(StatusBarKind.Health, function (status) {
+    game.over(false)
+})
 scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     if (mysprite2.isHittingTile(CollisionDirection.Left)) {
         mysprite2.setVelocity(50, 0)
@@ -447,9 +478,6 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSp
         info.startCountdown(1)
     }
 })
-statusbars.onZero(StatusBarKind.shield, function (status) {
-	
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (info.score() == 2) {
         statusbar2.value += -10
@@ -460,6 +488,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         info.setScore(0)
     }
 })
+let mySprite3: Sprite = null
+let my_sprite_4: Sprite = null
+let projectile: Sprite = null
 let statusbar3: StatusBarSprite = null
 let statusbar2: StatusBarSprite = null
 let statusbar: StatusBarSprite = null
@@ -521,4 +552,45 @@ game.onUpdateInterval(5000, function () {
 })
 game.onUpdateInterval(5000, function () {
     info.player2.changeScoreBy(1)
+})
+game.onUpdateInterval(20000, function () {
+    mySprite3 = sprites.create(img`
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+        `, SpriteKind.now)
+    my_sprite_4 = sprites.create(img`
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        `, SpriteKind.later)
+    game.showLongText("you got a meteor attack use it now or later", DialogLayout.Center)
+    tiles.placeOnTile(mySprite3, tiles.getTileLocation(5, 8))
+    tiles.placeOnTile(my_sprite_4, tiles.getTileLocation(9, 8))
 })
