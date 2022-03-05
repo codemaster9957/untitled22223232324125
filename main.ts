@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const now = SpriteKind.create()
     export const later = SpriteKind.create()
+    export const meteor = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const health2 = StatusBarKind.create()
@@ -118,30 +119,6 @@ controller.combos.attachCombo("A+L", function () {
     )
     info.startCountdown(2)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.now, function (sprite, otherSprite) {
-    if (controller.A.isPressed()) {
-        projectile = sprites.createProjectileFromSprite(img`
-            . . . . . . . c c c a c . . . . 
-            . . c c b b b a c a a a c . . . 
-            . c c a b a c b a a a b c c . . 
-            . c a b c f f f b a b b b a . . 
-            . c a c f f f 8 a b b b b b a . 
-            . c a 8 f f 8 c a b b b b b a . 
-            c c c a c c c c a b c f a b c c 
-            c c a a a c c c a c f f c b b a 
-            c c a b 6 a c c a f f c c b b a 
-            c a b c 8 6 c c a a a b b c b c 
-            c a c f f a c c a f a c c c b . 
-            c a 8 f c c b a f f c b c c c . 
-            . c b c c c c b f c a b b a c . 
-            . . a b b b b b b b b b b b c . 
-            . . . c c c c b b b b b c c . . 
-            . . . . . . . . c b b c . . . . 
-            `, mySprite, 100, 0)
-        my_sprite_4.destroy()
-        mySprite3.destroy()
-    }
-})
 statusbars.onZero(StatusBarKind.health2, function (status) {
     game.over(true)
 })
@@ -165,6 +142,9 @@ controller.combos.attachCombo("B+L", function () {
         . . . c c c c c c c c c c c . . 
         `)
     statusbar3.value += 10
+})
+sprites.onOverlap(SpriteKind.meteor, SpriteKind.Enemy, function (sprite, otherSprite) {
+    statusbar2.value += -4
 })
 controller.combos.attachCombo("B+R", function () {
     mySprite.setImage(img`
@@ -468,6 +448,29 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     )
     statusbar3.value = 0
 })
+controller.combos.attachCombo("L+R+A", function () {
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . c c c a c . . . . 
+        . . c c b b b a c a a a c . . . 
+        . c c a b a c b a a a b c c . . 
+        . c a b c f f f b a b b b a . . 
+        . c a c f f f 8 a b b b b b a . 
+        . c a 8 f f 8 c a b b b b b a . 
+        c c c a c c c c a b c f a b c c 
+        c c a a a c c c a c f f c b b a 
+        c c a b 6 a c c a f f c c b b a 
+        c a b c 8 6 c c a a a b b c b c 
+        c a c f f a c c a f a c c c b . 
+        c a 8 f c c b a f f c b c c c . 
+        . c b c c c c b f c a b b a c . 
+        . . a b b b b b b b b b b b c . 
+        . . . c c c c b b b b b c c . . 
+        . . . . . . . . c b b c . . . . 
+        `, mySprite, 100, 0)
+    projectile.setKind(SpriteKind.meteor)
+    controller.combos.setTriggerType(TriggerType.Continuous)
+    controller.combos.setTimeout(-50)
+})
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     if (statusbar3.value == 10) {
         music.spooky.playUntilDone()
@@ -479,29 +482,6 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSp
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.later, function (sprite, otherSprite) {
-    if (controller.A.isPressed()) {
-        projectile = sprites.createProjectileFromSprite(img`
-            . . . . . . . c c c a c . . . . 
-            . . c c b b b a c a a a c . . . 
-            . c c a b a c b a a a b c c . . 
-            . c a b c f f f b a b b b a . . 
-            . c a c f f f 8 a b b b b b a . 
-            . c a 8 f f 8 c a b b b b b a . 
-            c c c a c c c c a b c f a b c c 
-            c c a a a c c c a c f f c b b a 
-            c c a b 6 a c c a f f c c b b a 
-            c a b c 8 6 c c a a a b b c b c 
-            c a c f f a c c a f a c c c b . 
-            c a 8 f c c b a f f c b c c c . 
-            . c b c c c c b f c a b b a c . 
-            . . a b b b b b b b b b b b c . 
-            . . . c c c c b b b b b c c . . 
-            . . . . . . . . c b b c . . . . 
-            `, mySprite, 100, 0)
-        controller.combos.setTriggerType(TriggerType.Continuous)
-    }
-})
-controller.combos.attachSpecialCode(function () {
 	
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -514,8 +494,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         info.setScore(0)
     }
 })
-let mySprite3: Sprite = null
-let my_sprite_4: Sprite = null
 let projectile: Sprite = null
 let statusbar3: StatusBarSprite = null
 let statusbar2: StatusBarSprite = null
@@ -562,6 +540,9 @@ mysprite2 = sprites.create(img`
 statusbar = statusbars.create(20, 4, StatusBarKind.Health)
 statusbar2 = statusbars.create(20, 4, StatusBarKind.health2)
 statusbar3 = statusbars.create(20, 4, StatusBarKind.shield)
+let statusbar4 = statusbars.create(20, 4, StatusBarKind.Magic)
+statusbar4.attachToSprite(mySprite, 8, 0)
+statusbar4.value = 0
 statusbar3.value = 10
 statusbar3.setColor(9, 1)
 statusbar.attachToSprite(mySprite)
@@ -578,45 +559,4 @@ game.onUpdateInterval(5000, function () {
 })
 game.onUpdateInterval(5000, function () {
     info.player2.changeScoreBy(1)
-})
-game.onUpdateInterval(20000, function () {
-    mySprite3 = sprites.create(img`
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-        `, SpriteKind.now)
-    my_sprite_4 = sprites.create(img`
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-        `, SpriteKind.later)
-    game.showLongText("you got a meteor attack use it now or later", DialogLayout.Center)
-    tiles.placeOnTile(mySprite3, tiles.getTileLocation(5, 8))
-    tiles.placeOnTile(my_sprite_4, tiles.getTileLocation(9, 8))
 })
