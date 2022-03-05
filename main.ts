@@ -440,9 +440,11 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     if (statusbar3.value == 10) {
         music.spooky.playUntilDone()
+        info.startCountdown(1)
     }
-    if (info.player2.score() == 1) {
-        statusbar.value += -10
+    if (info.player2.score() <= 1) {
+        statusbar.value += -1
+        info.startCountdown(1)
     }
 })
 statusbars.onZero(StatusBarKind.shield, function (status) {
@@ -518,5 +520,5 @@ game.onUpdateInterval(5000, function () {
     mysprite2.setVelocity(50, 0)
 })
 game.onUpdateInterval(5000, function () {
-	
+    info.player2.changeScoreBy(1)
 })
